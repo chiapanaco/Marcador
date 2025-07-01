@@ -350,6 +350,48 @@ if ('serviceWorker' in navigator) {
     .then(reg => console.log('Service Worker registrado', reg))
     .catch(err => console.error('Error al registrar Service Worker:', err));
 }
+    function guardarEstado() {
+  const data = {
+    players,
+    colors,
+    rondas: Array.from(document.querySelectorAll("#scoreBody tr")).map(tr =>
+      Array.from(tr.querySelectorAll("input")).map(inp => inp.value.trim())
+    ),
+    darkMode: document.body.classList.contains("dark")
+  };
+  localStorage.setItem("marcadorData", JSON.stringify(data));
+}
+
+function cargarEstado() {
+  const saved = localStorage.getItem("marcadorData");
+  if (!saved) return;
+  const data = JSON.parse(saved);
+
+  players.splice(0); colors.splice(0);
+  data.players.forEach((p, i) => {
+    players.push(p);
+    colors.push(data.colors[i]);
+  });
+  rebuildTable();
+  data.rondas.forEach(ronda => {
+    addRound();
+    const row = document.querySelector("#scoreBody tr:last-child");
+    ronda.forEach((val, i) => {
+      row.querySelectorAll("input")[i].value = val;
+    });
+  });
+  calcTotals();
+  if (data.darkMode) {
+    document.body.classList.add("dark");
+    document.getElementById("modeToggle").textContent = "☀️";
+  }
+}
+
+document.addEventListener("input", guardarEstado);
+document.getElementById("addPlayerBtn").addEventListener("click", guardarEstado);
+document.getElementById("addRoundBtn").addEventListener("click", guardarEstado);
+
+cargarEstado();
 </script>
 </body>
 </html>
