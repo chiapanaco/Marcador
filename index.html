@@ -46,8 +46,9 @@
       font-size: 2em;
       margin-bottom: 10px;
     }
-   #modeToggle,
-#shuffleColorsBtn {
+#modeToggle,
+#shuffleColorsBtn,
+#resetAppBtn {
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -206,6 +207,7 @@
 <div style="text-align: center; margin-bottom: 20px;">
   <button id="modeToggle">🌙</button>
   <button id="shuffleColorsBtn">🎨</button>
+  <button id="resetAppBtn">🗑️</button>
 </div>
   <div id="setup">
     <input type="text" id="playerName" placeholder="👤 Nombre del jugador" />
@@ -457,6 +459,16 @@ function cargarEstado() {
   }
 }
 
+document.getElementById("resetAppBtn").onclick = () => {
+  if (confirm("¿Seguro que quieres borrar todos los datos?")) {
+    players.length = 0;
+    colors.length = 0;
+    document.getElementById("scoreBody").innerHTML = "";
+    document.getElementById("playerName").value = "";
+    document.getElementById("resultado").style.display = "none";
+    rebuildTable();
+  }
+};
 document.addEventListener("input", guardarEstado);
 document.getElementById("addPlayerBtn").addEventListener("click", guardarEstado);
 document.getElementById("addRoundBtn").addEventListener("click", guardarEstado);
