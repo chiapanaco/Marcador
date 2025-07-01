@@ -181,6 +181,19 @@
       float: right;
       cursor: pointer;
     }
+    .remove-round-btn {
+  background: transparent;
+  border: none;
+  font-size: 14px;
+  margin-right: 6px;
+  cursor: pointer;
+  padding: 0;
+  outline: none;
+  box-shadow: none;
+  line-height: 1;
+  appearance: none;
+  -webkit-appearance: none;
+}
   </style>
 </head>
 <body>
@@ -284,7 +297,9 @@ document.getElementById("shuffleColorsBtn").onclick = shuffleColors;
       body.innerHTML = "";
       old.forEach((row, ri) => {
         const newRow = document.createElement("tr");
-        newRow.appendChild(Object.assign(document.createElement("td"), {innerHTML: `<strong>${ri+1}</strong>`}));
+        const roundCell = document.createElement("td");
+roundCell.innerHTML = `<button class="remove-round-btn" onclick="removeRound(${ri})">🅧</button> <strong>${ri + 1}</strong>`;
+newRow.appendChild(roundCell);
         players.forEach((_, i) => {
           const cell = document.createElement("td");
           const input = document.createElement("input");
@@ -331,7 +346,13 @@ document.getElementById("shuffleColorsBtn").onclick = shuffleColors;
       });
       body.appendChild(row);
     }
-
+function removeRound(index) {
+  const body = document.getElementById("scoreBody");
+  if (body.rows[index]) {
+    body.deleteRow(index);
+    rebuildTable();
+  }
+}
     function calcTotals() {
       const totals = Array(players.length).fill(0);
       document.querySelectorAll("#scoreBody tr").forEach(row => {
