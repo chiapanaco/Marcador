@@ -415,8 +415,17 @@ cargarEstado();
     newColors.push(available.splice(index, 1)[0]);
   });
 
+  // Actualiza los colores en el arreglo
   colors.splice(0, colors.length, ...newColors);
-  rebuildTable();
+
+  // Actualiza visualmente la tabla con los nuevos colores
+  const headerCells = document.querySelectorAll("#headerRow th");
+  const totalCells = document.querySelectorAll("#totalRow td");
+
+  players.forEach((_, i) => {
+    headerCells[i + 1].style.background = colors[i];
+    totalCells[i + 1].style.background = colors[i];
+  });
 }
 </script>
 </body>
