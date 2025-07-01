@@ -296,30 +296,35 @@ document.getElementById("shuffleColorsBtn").onclick = shuffleColors;
       const old = Array.from(body.rows);
       body.innerHTML = "";
       old.forEach((row, ri) => {
-        const newRow = document.createElement("tr");
-        const roundCell = document.createElement("td");
-roundCell.innerHTML = `<button class="remove-round-btn" onclick="removeRound(${ri})">🅧</button> <strong>${ri + 1}</strong>`;
-newRow.appendChild(roundCell);
-        players.forEach((_, i) => {
-          const cell = document.createElement("td");
-          const input = document.createElement("input");
-          input.type = "text";
-          input.value = row.cells[i+1]?.querySelector("input")?.value || "";
-          input.oninput = calcTotals;
-          const btn = document.createElement("button");
-          btn.className = "x-btn";
-          btn.textContent = "✕";
-          btn.onclick = () => {
-            input.value = "⭕️";
-            calcTotals();
-          };
-          cell.appendChild(input);
-          cell.appendChild(document.createElement("br"));
-          cell.appendChild(btn);
-          newRow.appendChild(cell);
-        });
-        body.appendChild(newRow);
-      });
+  const newRow = document.createElement("tr");
+
+  // Celda de número de ronda con botón 🅧 para borrar
+  const roundCell = document.createElement("td");
+  roundCell.innerHTML = `<button class="remove-round-btn" onclick="removeRound(${ri})">🅧</button> <strong>${ri + 1}</strong>`;
+  newRow.appendChild(roundCell);
+
+  // Celdas de puntajes de cada jugador
+  players.forEach((_, i) => {
+    const cell = document.createElement("td");
+    const input = document.createElement("input");
+    input.type = "text";
+    input.value = row.cells[i + 1]?.querySelector("input")?.value || "";
+    input.oninput = calcTotals;
+    const btn = document.createElement("button");
+    btn.className = "x-btn";
+    btn.textContent = "✕";
+    btn.onclick = () => {
+      input.value = "⭕️";
+      calcTotals();
+    };
+    cell.appendChild(input);
+    cell.appendChild(document.createElement("br"));
+    cell.appendChild(btn);
+    newRow.appendChild(cell);
+  });
+
+  body.appendChild(newRow);
+});
       calcTotals();
     }
         function addRound() {
