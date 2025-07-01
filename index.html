@@ -396,7 +396,7 @@ function calcTotals() {
       results.sort((a, b) => tipo === "+" ? b.score - a.score : a.score - b.score);
         const topScore = results[0].score;
   const ganadores = results.filter(r => r.score === topScore);
-
+const div = document.getElementById("resultado");
   let mensajeGanador = "";
 
   if (ganadores.length === 1) {
