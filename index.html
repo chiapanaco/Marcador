@@ -246,7 +246,7 @@ document.getElementById("shuffleColorsBtn").onclick = shuffleColors;
       btn.textContent = body.classList.contains("dark") ? "☀️" : "🌙";
     };
     function shuffleColors() {
-  const pool = ["#A8DADC", "#FFD6A5", "#FDFFB6", "#CAFFBF", "#B5EAD7", "#E0BBE4", "#FFB5A7", "#C9CBA3", "#D0F4DE", "#FEC8D8"];
+  const pool = ["#FF0000", "#00BFFF", "#32CD32", "#FFD700", "#FF69B4", "#800080", "#FF8C00", "#00FA9A", "#1E90FF", "#DC143C"];
   const available = [...pool];
   const newColors = [];
 
@@ -263,7 +263,7 @@ document.getElementById("shuffleColorsBtn").onclick = shuffleColors;
   rebuildTable();
 }
        function getColor() {
-      const pool = ["#A8DADC","#FFD6A5","#FDFFB6","#CAFFBF","#B5EAD7","#E0BBE4","#FFB5A7","#C9CBA3","#D0F4DE","#FEC8D8"];
+      const pool = ["#FF0000", "#00BFFF", "#32CD32", "#FFD700", "#FF69B4", "#800080", "#FF8C00", "#00FA9A", "#1E90FF", "#DC143C"];
       let color;
       do {
         color = pool[Math.floor(Math.random()*pool.length)];
