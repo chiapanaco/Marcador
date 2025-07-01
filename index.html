@@ -399,34 +399,20 @@ function cargarEstado() {
     document.getElementById("modeToggle").textContent = "☀️";
   }
 }
+function shuffleColors() {
+  const pool = ["#A8DADC", "#FFD6A5", "#FDFFB6", "#CAFFBF", "#B5EAD7", "#E0BBE4", "#FFB5A7", "#C9CBA3", "#D0F4DE", "#FEC8D8"];
+  const shuffled = [...pool].sort(() => Math.random() - 0.5);
+  const newColors = shuffled.slice(0, players.length);
 
+  colors.splice(0, colors.length, ...newColors);
+  rebuildTable(); // <- fuerza la actualización visual completa
+}
 document.addEventListener("input", guardarEstado);
 document.getElementById("addPlayerBtn").addEventListener("click", guardarEstado);
 document.getElementById("addRoundBtn").addEventListener("click", guardarEstado);
 
 cargarEstado();
-    function shuffleColors() {
-  const pool = ["#A8DADC","#FFD6A5","#FDFFB6","#CAFFBF","#B5EAD7","#E0BBE4","#FFB5A7","#C9CBA3","#D0F4DE","#FEC8D8"];
-  const newColors = [];
-  const available = [...pool];
-
-  players.forEach(() => {
-    const index = Math.floor(Math.random() * available.length);
-    newColors.push(available.splice(index, 1)[0]);
-  });
-
-  // Actualiza los colores en el arreglo
-  colors.splice(0, colors.length, ...newColors);
-
-  // Actualiza visualmente la tabla con los nuevos colores
-  const headerCells = document.querySelectorAll("#headerRow th");
-  const totalCells = document.querySelectorAll("#totalRow td");
-
-  players.forEach((_, i) => {
-    headerCells[i + 1].style.background = colors[i];
-    totalCells[i + 1].style.background = colors[i];
-  });
-}
+  
 </script>
 </body>
 </html>
