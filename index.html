@@ -401,7 +401,7 @@ function removeRound(index) {
       const maxScore = Math.max(...results.map(r => r.score));
 const maxHeight = 120; // altura máxima en px
       div.innerHTML = `<div class='modal'>
-        <button class='close-btn' onclick="document.getElementById('resultado').style.display='none'">Cerrar</button>
+       <button class='close-btn' onclick="document.getElementById('resultado').style.display='none'">🅧</button>
         <h2>🎉 ${ganador.name} ganó la partida</h2>
         ${results.map((r, i) => `<p>${r.name}: ${r.score} ${emojis[i]}</p>`).join("")}
         <div class="bar-container">
