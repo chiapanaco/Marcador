@@ -376,20 +376,20 @@ function removeRound(index) {
     rebuildTable();
   }
 }
-    function calcTotals() {
-      const totals = Array(players.length).fill(0);
-      document.querySelectorAll("#scoreBody tr").forEach(row => {
-        Array.from(row.querySelectorAll("td")).slice(1).forEach((cell, j) => {
-          const val = cell.querySelector("input").value.trim();
-          if (val === "⭕️") return;
-          const num = parseInt(val);
-          if (!isNaN(num)) totals[j] += num;
-        });
-      });
-      totals.forEach((t, i) => {
-        document.getElementById("total-" + i).textContent = t;
-      });
-    }
+function calcTotals() {
+  const totals = Array(players.length).fill(0);
+  document.querySelectorAll("#scoreBody tr").forEach(row => {
+    Array.from(row.querySelectorAll("td")).slice(1).forEach((cell, j) => {
+      const val = cell.querySelector("input").value.trim();
+      if (val === "⭕️") return;
+      const num = Number(val); // ← aquí usamos Number en lugar de parseInt
+      if (!isNaN(num)) totals[j] += num;
+    });
+  });
+  totals.forEach((t, i) => {
+    document.getElementById("total-" + i).textContent = t;
+  });
+}
 
     function finalizarJuego(tipo) {
       const results = players.map((p, i) => ({ name: p, score: parseInt(document.getElementById("total-"+i).textContent), i }));
