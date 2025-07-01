@@ -220,6 +220,23 @@ document.getElementById("shuffleColorsBtn").onclick = shuffleColors;
       body.classList.toggle("dark");
       btn.textContent = body.classList.contains("dark") ? "☀️" : "🌙";
     };
+    function shuffleColors() {
+  const pool = ["#A8DADC", "#FFD6A5", "#FDFFB6", "#CAFFBF", "#B5EAD7", "#E0BBE4", "#FFB5A7", "#C9CBA3", "#D0F4DE", "#FEC8D8"];
+  const available = [...pool];
+  const newColors = [];
+
+  // Asigna colores únicos aleatoriamente
+  players.forEach(() => {
+    const index = Math.floor(Math.random() * available.length);
+    newColors.push(available.splice(index, 1)[0]);
+  });
+
+  // Reemplaza los colores actuales
+  colors.splice(0, colors.length, ...newColors);
+
+  // Fuerza la reconstrucción completa de la tabla
+  rebuildTable();
+}
        function getColor() {
       const pool = ["#A8DADC","#FFD6A5","#FDFFB6","#CAFFBF","#B5EAD7","#E0BBE4","#FFB5A7","#C9CBA3","#D0F4DE","#FEC8D8"];
       let color;
@@ -399,23 +416,7 @@ function cargarEstado() {
     document.getElementById("modeToggle").textContent = "☀️";
   }
 }
-function shuffleColors() {
-  const pool = ["#A8DADC", "#FFD6A5", "#FDFFB6", "#CAFFBF", "#B5EAD7", "#E0BBE4", "#FFB5A7", "#C9CBA3", "#D0F4DE", "#FEC8D8"];
-  const available = [...pool];
-  const newColors = [];
 
-  // Asigna colores únicos aleatoriamente
-  players.forEach(() => {
-    const index = Math.floor(Math.random() * available.length);
-    newColors.push(available.splice(index, 1)[0]);
-  });
-
-  // Reemplaza los colores actuales
-  colors.splice(0, colors.length, ...newColors);
-
-  // Fuerza la reconstrucción completa de la tabla
-  rebuildTable();
-}
 document.addEventListener("input", guardarEstado);
 document.getElementById("addPlayerBtn").addEventListener("click", guardarEstado);
 document.getElementById("addRoundBtn").addEventListener("click", guardarEstado);
