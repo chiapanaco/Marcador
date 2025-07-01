@@ -328,17 +328,19 @@
       const sadEmojis = ["😢", "😟", "😞", "😠", "😤", "😭", "😿", "😣"];
       const emojis = [happyEmojis[Math.floor(Math.random()*happyEmojis.length)], 
                       ...results.slice(1).map(() => sadEmojis[Math.floor(Math.random()*sadEmojis.length)])];
+      const maxScore = Math.max(...results.map(r => r.score));
+const maxHeight = 120; // altura máxima en px
       div.innerHTML = `<div class='modal'>
         <button class='close-btn' onclick="document.getElementById('resultado').style.display='none'">Cerrar</button>
         <h2>🎉 ${ganador.name} ganó la partida</h2>
         ${results.map((r, i) => `<p>${r.name}: ${r.score} ${emojis[i]}</p>`).join("")}
         <div class="bar-container">
           ${results.map(r => `
-            <div class="bar">
-              <div class="bar-rect" style="height:${r.score}px"></div>
-              <div>${r.name}</div>
-            </div>
-          `).join("")}
+  <div class="bar">
+    <div class="bar-rect" style="height:${(r.score / maxScore) * maxHeight}px"></div>
+    <div>${r.name}</div>
+  </div>
+`).join("")}
         </div>
       </div>`;
       div.style.display = "block";
