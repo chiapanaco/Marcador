@@ -327,30 +327,36 @@ document.getElementById("shuffleColorsBtn").onclick = shuffleColors;
 });
       calcTotals();
     }
-        function addRound() {
-      if (!players.length) return;
-      const body = document.getElementById("scoreBody");
-      const row = document.createElement("tr");
-      row.appendChild(Object.assign(document.createElement("td"), {innerHTML: `<strong>${body.rows.length+1}</strong>`}));
-      players.forEach((_, i) => {
-        const cell = document.createElement("td");
-        const input = document.createElement("input");
-        input.type = "text";
-        input.oninput = calcTotals;
-        const btn = document.createElement("button");
-        btn.className = "x-btn";
-        btn.textContent = "✕";
-        btn.onclick = () => {
-          input.value = "⭕️";
-          calcTotals();
-        };
-        cell.appendChild(input);
-        cell.appendChild(document.createElement("br"));
-        cell.appendChild(btn);
-        row.appendChild(cell);
-      });
-      body.appendChild(row);
-    }
+ function addRound() {
+  if (!players.length) return;
+  const body = document.getElementById("scoreBody");
+  const row = document.createElement("tr");
+
+  const roundIndex = body.rows.length;
+  const roundCell = document.createElement("td");
+  roundCell.innerHTML = `<button class="remove-round-btn" onclick="removeRound(${roundIndex})">🅧</button> <strong>${roundIndex + 1}</strong>`;
+  row.appendChild(roundCell);
+
+  players.forEach((_, i) => {
+    const cell = document.createElement("td");
+    const input = document.createElement("input");
+    input.type = "text";
+    input.oninput = calcTotals;
+    const btn = document.createElement("button");
+    btn.className = "x-btn";
+    btn.textContent = "✕";
+    btn.onclick = () => {
+      input.value = "⭕️";
+      calcTotals();
+    };
+    cell.appendChild(input);
+    cell.appendChild(document.createElement("br"));
+    cell.appendChild(btn);
+    row.appendChild(cell);
+  });
+
+  body.appendChild(row);
+}
 function removeRound(index) {
   const body = document.getElementById("scoreBody");
   if (body.rows[index]) {
