@@ -189,9 +189,10 @@
   <div id="setup">
     <input type="text" id="playerName" placeholder="👤 Nombre del jugador" />
     <div id="buttonContainer">
-      <button id="addPlayerBtn">🎯 JUGADOR</button>
-      <button id="addRoundBtn">🔁 RONDA</button>
-    </div>
+  <button id="addPlayerBtn">🎯 JUGADOR</button>
+  <button id="addRoundBtn">🔁 RONDA</button>
+  <button id="shuffleColorsBtn">🎨</button>
+</div>
   </div>
   <div style="overflow-x:auto;">
     <table id="scoreTable">
@@ -211,7 +212,8 @@
     const sad = ["😢","😟","😞","😠","😤","😭","😿"];
     const players = [], colors = [];
     document.getElementById("addPlayerBtn").onclick = addPlayer;
-    document.getElementById("addRoundBtn").onclick = addRound;
+document.getElementById("addRoundBtn").onclick = addRound;
+document.getElementById("shuffleColorsBtn").onclick = shuffleColors;
     document.getElementById("modeToggle").onclick = () => {
       const body = document.body;
       const btn = document.getElementById("modeToggle");
@@ -403,6 +405,19 @@ document.getElementById("addPlayerBtn").addEventListener("click", guardarEstado)
 document.getElementById("addRoundBtn").addEventListener("click", guardarEstado);
 
 cargarEstado();
+    function shuffleColors() {
+  const pool = ["#A8DADC","#FFD6A5","#FDFFB6","#CAFFBF","#B5EAD7","#E0BBE4","#FFB5A7","#C9CBA3","#D0F4DE","#FEC8D8"];
+  const newColors = [];
+  const available = [...pool];
+
+  players.forEach(() => {
+    const index = Math.floor(Math.random() * available.length);
+    newColors.push(available.splice(index, 1)[0]);
+  });
+
+  colors.splice(0, colors.length, ...newColors);
+  rebuildTable();
+}
 </script>
 </body>
 </html>
