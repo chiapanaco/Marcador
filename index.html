@@ -46,6 +46,27 @@
       font-size: 2em;
       margin-bottom: 10px;
     }
+    #modeControls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin: 0 auto 20px auto;
+}
+
+#modeControls button {
+  font-size: 20px;
+  width: 40px;
+  height: 40px;
+  background: var(--button);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
     #modeToggle {
       display: block;
       margin: 0 auto 20px auto;
@@ -194,32 +215,12 @@
   appearance: none;
   -webkit-appearance: none;
 }
-#modeControls {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-  margin: 0 auto 20px auto;
-}
 
-#modeControls button {
-  font-size: 20px;
-  width: 40px;
-  height: 40px;
-  background: var(--button);
-  border: none;
-  border-radius: 10px;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-}
   </style>
 </head>
 <body>
   <h1>📊 PUNTUACIONES</h1>
-  <div id="modeControls">
+ <div id="modeControls">
   <button id="modeToggle">🌙</button>
   <button id="shuffleColorsBtn">🎨</button>
 </div>
