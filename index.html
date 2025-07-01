@@ -194,17 +194,36 @@
   appearance: none;
   -webkit-appearance: none;
 }
+#modeControls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+#modeControls button {
+  font-size: 14px;
+  padding: 4px 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: var(--button);
+  color: white;
+}
   </style>
 </head>
 <body>
   <h1>📊 PUNTUACIONES</h1>
+  <div id="modeControls">
   <button id="modeToggle">🌙</button>
+  <button id="shuffleColorsBtn">🎨</button>
+</div>
   <div id="setup">
     <input type="text" id="playerName" placeholder="👤 Nombre del jugador" />
     <div id="buttonContainer">
   <button id="addPlayerBtn">🎯 JUGADOR</button>
   <button id="addRoundBtn">🔁 RONDA</button>
-  <button id="shuffleColorsBtn">🎨</button>
+  
 </div>
   </div>
   <div style="overflow-x:auto;">
