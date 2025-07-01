@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Marcador</title>
+  
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>PUNTUACIONES</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #f2f2f2;
+      --text: #000;
+      --accent: #dc3545;
+      --line: #ccc;
+      --button: #007BFF;
+    }
+    body.dark {
+      --bg: #121212;
+      --text: #eee;
+      --accent: #ff4c4c;
+      --line: #444;
+      --button: #3399ff;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+    #modeToggle {
+      display: block;
+      margin: 0 auto 20px auto;
+      font-size: 14px;
+      padding: 4px 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: var(--button);
+      color: white;
+    }
+    #setup {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    #setup input {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      width: 80%;
+      max-width: 300px;
+    }
+    #buttonContainer {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    button {
+      padding: 8px 14px;
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: 12px;
+      border: none;
+      background: var(--button);
+      color: white;
+    }
+    .small-red {
+      font-size: 13px;
+      background: var(--accent);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 10px;
+      margin: 4px;
+    }
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      border-radius: 16px;
+    }
+    th, td {
+      padding: 10px;
+      text-align: center;
+      position: relative;
+      border-radius: 12px;
+    }
+    tr:not(:last-child) {
+      border-bottom: 2px solid var(--line);
+    }
+        input[type="text"] {
+      width: 60px;
+      text-align: center;
+      font-size: 16px;
+      padding: 6px;
+      border-radius: 10px;
+    }
+    .x-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      margin-top: 5px;
+      cursor: pointer;
+    }
+    .remove-btn {
+      background: none;
+      border: none;
+      font-size: 16px;
+      margin-left: 6px;
+      cursor: pointer;
+    }
+    .total {
+      font-weight: bold;
+    }
+    #resultado .modal {
+      position: fixed;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: white;
+      color: black;
+      border-radius: 16px;
+      padding: 20px;
+      z-index: 9999;
+      max-width: 90%;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+    .bar-container {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      justify-content: center;
+    }
+    .bar {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .bar-rect {
+      width: 40px;
+      background: var(--button);
+      margin-top: 4px;
+      transition: height 0.3s;
+    }
+    .close-btn {
+      background: var(--accent);
+      color: white;
+      padding: 4px 10px;
+      border: none;
+      border-radius: 8px;
+      float: right;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>📊 PUNTUACIONES</h1>
+  <button id="modeToggle">🌙</button>
+  <div id="setup">
+    <input type="text" id="playerName" placeholder="👤 Nombre del jugador" />
+    <div id="buttonContainer">
+      <button id="addPlayerBtn">🎯 JUGADOR</button>
+      <button id="addRoundBtn">🔁 RONDA</button>
+    </div>
+  </div>
+  <div style="overflow-x:auto;">
+    <table id="scoreTable">
+      <thead><tr id="headerRow"><th>Ronda</th></tr></thead>
+      <tbody id="scoreBody"></tbody>
+      <tfoot><tr id="totalRow"><td class="total">Total</td></tr></tfoot>
+    </table>
+  </div>
+  <div id="finalizarContainer" style="text-align:center; margin-top:20px;">
+    <button class="small-red" onclick="finalizarJuego('+')">➕ más gana</button>
+    <button class="small-red" onclick="finalizarJuego('-')">➖ menos gana</button>
+  </div>
+  <div id="resultado" style="display:none;"></div>
+  <script>
+    const worried = ["⭕️"];
+    const happy = ["😄","😃","😁","🤩","😆","🎉","😺"];
+    const sad = ["😢","😟","😞","😠","😤","😭","😿"];
+    const players = [], colors = [];
+    document.getElementById("addPlayerBtn").onclick = addPlayer;
+    document.getElementById("addRoundBtn").onclick = addRound;
+    document.getElementById("modeToggle").onclick = () => {
+      const body = document.body;
+      const btn = document.getElementById("modeToggle");
+      body.classList.toggle("dark");
+      btn.textContent = body.classList.contains("dark") ? "☀️" : "🌙";
+    };
+       function getColor() {
+      const pool = ["#A8DADC","#FFD6A5","#FDFFB6","#CAFFBF","#B5EAD7","#E0BBE4","#FFB5A7","#C9CBA3","#D0F4DE","#FEC8D8"];
+      let color;
+      do {
+        color = pool[Math.floor(Math.random()*pool.length)];
+      } while (colors.includes(color));
+      return color;
+    }
+
+    function addPlayer() {
+      const name = document.getElementById("playerName").value.trim();
+      if (!name) return alert("Nombre requerido");
+      players.push(name);
+      colors.push(getColor());
+      document.getElementById("playerName").value = "";
+      rebuildTable();
+    }
+
+    function removePlayer(i) {
+      players.splice(i, 1);
+      colors.splice(i, 1);
+      rebuildTable();
+    }
+
+    function rebuildTable() {
+      const header = document.getElementById("headerRow");
+      const total = document.getElementById("totalRow");
+      header.innerHTML = "<th>Ronda</th>";
+      total.innerHTML = '<td class="total">Total</td>';
+      players.forEach((p, i) => {
+        const th = document.createElement("th");
+        th.style.background = colors[i];
+        th.style.color = "#111";
+        th.innerHTML = `${p} <button class='remove-btn' onclick='removePlayer(${i})'>🅧</button>`;
+        header.appendChild(th);
+        const td = document.createElement("td");
+        td.className = "total";
+        td.id = "total-" + i;
+        td.style.background = colors[i];
+        td.style.color = "#111";
+        total.appendChild(td);
+      });
+      const body = document.getElementById("scoreBody");
+      const old = Array.from(body.rows);
+      body.innerHTML = "";
+      old.forEach((row, ri) => {
+        const newRow = document.createElement("tr");
+        newRow.appendChild(Object.assign(document.createElement("td"), {innerHTML: `<strong>${ri+1}</strong>`}));
+        players.forEach((_, i) => {
+          const cell = document.createElement("td");
+          const input = document.createElement("input");
+          input.type = "text";
+          input.value = row.cells[i+1]?.querySelector("input")?.value || "";
+          input.oninput = calcTotals;
+          const btn = document.createElement("button");
+          btn.className = "x-btn";
+          btn.textContent = "✕";
+          btn.onclick = () => {
+            input.value = "⭕️";
+            calcTotals();
+          };
+          cell.appendChild(input);
+          cell.appendChild(document.createElement("br"));
+          cell.appendChild(btn);
+          newRow.appendChild(cell);
+        });
+        body.appendChild(newRow);
+      });
+      calcTotals();
+    }
+        function addRound() {
+      if (!players.length) return;
+      const body = document.getElementById("scoreBody");
+      const row = document.createElement("tr");
+      row.appendChild(Object.assign(document.createElement("td"), {innerHTML: `<strong>${body.rows.length+1}</strong>`}));
+      players.forEach((_, i) => {
+        const cell = document.createElement("td");
+        const input = document.createElement("input");
+        input.type = "text";
+        input.oninput = calcTotals;
+        const btn = document.createElement("button");
+        btn.className = "x-btn";
+        btn.textContent = "✕";
+        btn.onclick = () => {
+          input.value = "⭕️";
+          calcTotals();
+        };
+        cell.appendChild(input);
+        cell.appendChild(document.createElement("br"));
+        cell.appendChild(btn);
+        row.appendChild(cell);
+      });
+      body.appendChild(row);
+    }
+
+    function calcTotals() {
+      const totals = Array(players.length).fill(0);
+      document.querySelectorAll("#scoreBody tr").forEach(row => {
+        Array.from(row.querySelectorAll("td")).slice(1).forEach((cell, j) => {
+          const val = cell.querySelector("input").value.trim();
+          if (val === "⭕️") return;
+          const num = parseInt(val);
+          if (!isNaN(num)) totals[j] += num;
+        });
+      });
+      totals.forEach((t, i) => {
+        document.getElementById("total-" + i).textContent = t;
+      });
+    }
+
+    function finalizarJuego(tipo) {
+      const results = players.map((p, i) => ({ name: p, score: parseInt(document.getElementById("total-"+i).textContent), i }));
+      results.sort((a, b) => tipo === "+" ? b.score - a.score : a.score - b.score);
+      const ganador = results[0];
+      const div = document.getElementById("resultado");
+      const happyEmojis = ["😄", "🤩", "😁", "🥳", "😃", "😆"];
+      const sadEmojis = ["😢", "😟", "😞", "😠", "😤", "😭", "😿", "😣"];
+      const emojis = [happyEmojis[Math.floor(Math.random()*happyEmojis.length)], 
+                      ...results.slice(1).map(() => sadEmojis[Math.floor(Math.random()*sadEmojis.length)])];
+      div.innerHTML = `<div class='modal'>
+        <button class='close-btn' onclick="document.getElementById('resultado').style.display='none'">Cerrar</button>
+        <h2>🎉 ${ganador.name} ganó la partida</h2>
+        ${results.map((r, i) => `<p>${r.name}: ${r.score} ${emojis[i]}</p>`).join("")}
+        <div class="bar-container">
+          ${results.map(r => `
+            <div class="bar">
+              <div class="bar-rect" style="height:${r.score}px"></div>
+              <div>${r.name}</div>
+            </div>
+          `).join("")}
+        </div>
+      </div>`;
+      div.style.display = "block";
+    }
+  </script>
+</body>
+</html>
+<!-- partial -->
+  
+</body>
+</html>
