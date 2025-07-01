@@ -401,11 +401,20 @@ function cargarEstado() {
 }
 function shuffleColors() {
   const pool = ["#A8DADC", "#FFD6A5", "#FDFFB6", "#CAFFBF", "#B5EAD7", "#E0BBE4", "#FFB5A7", "#C9CBA3", "#D0F4DE", "#FEC8D8"];
-  const shuffled = [...pool].sort(() => Math.random() - 0.5);
-  const newColors = shuffled.slice(0, players.length);
+  const available = [...pool];
+  const newColors = [];
 
+  // Asigna colores únicos aleatoriamente
+  players.forEach(() => {
+    const index = Math.floor(Math.random() * available.length);
+    newColors.push(available.splice(index, 1)[0]);
+  });
+
+  // Reemplaza los colores actuales
   colors.splice(0, colors.length, ...newColors);
-  rebuildTable(); // <- fuerza la actualización visual completa
+
+  // Fuerza la reconstrucción completa de la tabla
+  rebuildTable();
 }
 document.addEventListener("input", guardarEstado);
 document.getElementById("addPlayerBtn").addEventListener("click", guardarEstado);
