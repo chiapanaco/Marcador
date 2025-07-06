@@ -420,16 +420,16 @@ const div = document.getElementById("resultado");
     <h2>${mensajeGanador}</h2>
     ${results.map((r, i) => `<p>${r.name}: ${r.score} ${emojis[i]}</p>`).join("")}
     <div class="bar-container">
-      ${results.map(r => `
-        <div class="bar">
-          <div class="bar-rect" style="height:${Math.max(20, r.score / 2)}px"></div>
-          <div>${r.name}</div>
-        </div>
-      `).join("")}
-    </div>
-  </div>`;
-`).join("")}
-        </div>
+  ${results.map((r, i) => {
+    const height = (r.score / topScore) * 100; // 100px máx
+    return `
+      <div class="bar">
+        <div class="bar-rect" style="height:${height}px; background:${colors[r.i]}"></div>
+        <div>${r.name}</div>
+      </div>
+    `;
+  }).join("")}
+</div>
       </div>`;
       div.style.display = "block";
     }
