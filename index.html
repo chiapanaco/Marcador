@@ -394,7 +394,7 @@ function calcTotals() {
     function finalizarJuego(tipo) {
       const results = players.map((p, i) => ({ name: p, score: parseInt(document.getElementById("total-"+i).textContent), i }));
       results.sort((a, b) => tipo === "+" ? b.score - a.score : a.score - b.score);
-        const topScore = Math.max(...results.map(r => r.score));
+        const maxAbsScore = Math.max(...results.map(r => Math.abs(r.score)));
   const ganadores = results.filter(r => r.score === topScore);
 const div = document.getElementById("resultado");
   let mensajeGanador = "";
@@ -424,7 +424,7 @@ const div = document.getElementById("resultado");
     const height = (r.score / topScore) * 100; // 100px máx
     return `
       <div class="bar">
-        <div class="bar-rect" style="height:${height}px; background:${colors[r.i]}"></div>
+        <div class="bar-rect" style="height:${(Math.abs(r.score) / maxAbsScore) * 100}px; background:${colors[r.i]}"></div>
         <div>${r.name}</div>
       </div>
     `;
