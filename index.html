@@ -394,7 +394,7 @@ function calcTotals() {
     function finalizarJuego(tipo) {
       const results = players.map((p, i) => ({ name: p, score: parseInt(document.getElementById("total-"+i).textContent), i }));
       results.sort((a, b) => tipo === "+" ? b.score - a.score : a.score - b.score);
-        const topScore = results[0].score;
+        const topScore = Math.max(...results.map(r => r.score));
   const ganadores = results.filter(r => r.score === topScore);
 const div = document.getElementById("resultado");
   let mensajeGanador = "";
